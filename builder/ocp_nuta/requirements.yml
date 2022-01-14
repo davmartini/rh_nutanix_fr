@@ -1,0 +1,5 @@
+---
+collections:
+  - redhat.openshift
+  - redhat.rhel_system_roles
+  - community.general

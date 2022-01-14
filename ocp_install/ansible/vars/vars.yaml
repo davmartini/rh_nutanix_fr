@@ -1,0 +1,64 @@
+#######################################################################################################################
+#
+#       Variables file with all your parameters for your deployment in your environment
+#       You have an example in ocp_install directory with the file vars.yaml.example
+#
+#######################################################################################################################            
+
+##### Nutanix clusters vars
+nutanix_username:                                               #nutanix adm user
+nutanix_password:                                               #nutanix adm password
+nutanix_endpoint:                                               #nutanix Prism Central/Element IP
+nutanix_port:                                                   #nutanix Prism port
+subnet_name:                                                    #AOS subnet name used to deploy your cluster
+cluster_name:                                                   #AOS Cluster name
+
+##### Global vars
+domain_name:                                                    #Your DNS domain
+rh_ak_name:                                                     #Your Red Hat Activation key to register infravm (https://access.redhat.com/articles/1378093)
+rh_org_id:                                                      #Your Red Hat Organization ID in your Red Hat account.
+rh_pool_id:                                                     #Your subscription pool ID coresponding to RHEL8 SKU
+
+##### infravm vars
+infravm_image_name:                                             #RHEL8 image name imported on your Nutanix AOS Cluster
+infravm_ip:                                                     #Infravm IP you chosen
+infravm_cpu:                                                    #Infravm CPU number
+infravm_socket:                                                 #Infravm Socket number
+infravm_mem:                                                    #Infravm MEM number
+infravm_disk:                                                   #Infravm disk capacity
+infravm_remote_user:                                            #SSH user used by Ansible to connect to the infravm server
+haproxy_stat_pwd:                                               #HAProxy stats page password
+
+##### OCP clusters vars
+ocp_cluster_name:                                               #OCP Cluster name without special characters
+ocp_image_name:                                                 #RHCOS image name imported on your AOS Cluster
+ocp_cluster_cidr:                                               #OCP Cluster cidr
+ocp_service_cidr:                                               #OCP Cluster service cidr
+ocp_hostprefix:                                                 #OCP Cluster host prefix
+ocp_networktype:                                                #OCP Cluster SDN Type
+ocp_pull_secret: '<your OpenShift pull secret>'                 #OCP pull secret get on console.redhat.com with your Red hat account
+ocp_pub_sshkey: '<your ssh pub key>'                            #You SSH public key to access to OCP nodes
+ocp_private_sshkey_path: '/root/.ssh/my_key'                    #Your SSH private key to place in your .ssh user directory
+## Master conf
+master_count:                                                   #Number of OCP master nodes
+master_disk:                                                    #OCP master disk capacity
+## Worker conf
+worker_count:                                                   #Number of OCP worker nodes
+worker_cpu:                                                     #OCP worker CPU number
+worker_socket:                                                  #OCP worker Socket number
+worker_mem:                                                     #OCP worker MEM number
+worker_disk:                                                    #OCP worker disk capacity
+
+##### OCP GitOps
+enable_gitops:                                                  #Install GitOps on your cluster : true or false
+
+##### OCP Nutanix CSI
+enable_nutanix_csi:                                             #Install Nutanix CSI operator on your cluster : true or false
+csi_fstype:                                                     #define fstype for your storage classe: ext4 or xfs
+nutanix_prim_element_vip:                                       #Prism Element endpoint VIP who provides the dataService
+nutanix_dataServiceEndPoint:                                    #Prism Element dataService endpoint IP
+nutanix_dataServiceEndPoint_port:                               #dataService endpoint port. Default = 3260
+nutanix_storageContainer:                                       #Storage Container name on your Nutanix AOS Cluster
+nutanix_storageType:                                            #Storage type. Default = NutanixVolumes
+enable_iscsi_master:                                            #Enable iscsi driver on master node to mount storage provided by Nutanix cluster. Default: false
+enable_iscsi_worker:                                            #Enable iscsi driver on worker node to mount storage provided by Nutanix cluster. Default: true

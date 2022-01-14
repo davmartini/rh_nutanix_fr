@@ -1,0 +1,30 @@
+#######################################################################################################################
+#
+#       Variables file with all your parameters for your deployment in your environment
+#       You have an example in ocp_install directory with the file vars.yaml.example
+#
+#######################################################################################################################            
+
+##### Nutanix clusters vars 
+nutanix_username: admin						#nutanix adm user
+nutanix_password: password 					#nutanix adm password
+nutanix_endpoint: 10.30.10.100					#nutanix Prism Central/Element IP
+nutanix_port: 9440						#nutanix Prism port
+subnet_name: ocp_subnet						#AOS subnet name used to deploy your cluster
+cluster_name: MY-CLUSTER					#AOS Cluster name
+
+##### Global vars
+infravm_ip: 10.42.72.210
+
+##### OCP clusters vars
+ocp_admin_token: 'sha256~_UpbxtTeedduHCrl7_b28Cugj90ThjkpCirQl0OXcEMZ5Sk'	#Your admin token generated from your OCP cluster console
+ocp_api_url: 'https://api.cluster01.example.io:6443'				#Your OCP API URL
+ocp_cluster_name: cluster01							#Your existing OCP Cluster name without special characters
+ocp_image_name: rhcos-4.9.0-x86_64-openstack.x86_64.qcow2			#RHCOS image name imported on your AOS Cluster
+## Worker conf
+scale_date: 060121
+worker_count: 3                                                  #Number of OCP new worker nodes
+worker_cpu: 2                                                    #OCP worker CPU number
+worker_socket: 2                                                 #OCP worker Socket number
+worker_mem: 8192                                                 #OCP worker MEM number
+worker_disk: 100                                                 #OCP worker disk capacity

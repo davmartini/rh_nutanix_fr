@@ -1,0 +1,9 @@
+kind: NutanixCsiStorage
+apiVersion: crd.nutanix.com/v1alpha1
+metadata:
+  name: nutanixcsistorage
+  namespace: ntnx-system
+spec:
+  openshift:
+    masterIscsiConfig: {{ enable_iscsi_master }}
+    workerIscsiConfig: {{ enable_iscsi_worker }}

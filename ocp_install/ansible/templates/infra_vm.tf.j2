@@ -1,0 +1,37 @@
+resource "nutanix_virtual_machine" "ocp-infra" {
+  name = "{{ ocp_cluster_name }}-ocp-infra"
+  cluster_uuid = data.nutanix_cluster.my_cluster.metadata.uuid
+  num_vcpus_per_socket = {{ infravm_cpu }}
+  num_sockets          = {{ infravm_socket }}
+  memory_size_mib      = {{ infravm_mem }}
+
+  guest_customization_cloud_init_user_data = base64encode("${data.template_file.user_data_infravm.rendered}")
+
+  disk_list {
+    data_source_reference = {
+      kind = "image"
+      uuid = data.nutanix_image.infravm_image.metadata.uuid
+    }
+    disk_size_mib = {{ infravm_disk }} * 1024
+    device_properties {
+      device_type = "DISK"
+      disk_address = {
+        "adapter_type" = "SCSI"
+        "device_index" = "0"
+      }
+    }
+  }
+
+  nic_list {
+     subnet_uuid = data.nutanix_subnet.my_subnet.metadata.uuid
+     ip_endpoint_list {
+       ip = "{{ infravm_ip }}"
+       type = "ASSIGNED"
+     }
+   }
+
+}
+
+output "ip_address_infra_vm" {
+  value = nutanix_virtual_machine.ocp-infra.nic_list_status.0.ip_endpoint_list[0]["ip"]
+}

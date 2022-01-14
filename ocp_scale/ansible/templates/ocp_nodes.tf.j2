@@ -1,0 +1,36 @@
+###OCP workers
+resource "nutanix_virtual_machine" "ocp-worker" {
+  count = {{ worker_count }}
+  name = "{{ ocp_cluster_name }}-ocp-worker-{{ scale_date }}-${count.index}"
+  cluster_uuid = data.nutanix_cluster.my_cluster.metadata.uuid
+  num_vcpus_per_socket = {{ worker_cpu }}
+  num_sockets          = {{ worker_socket }}
+  memory_size_mib      = {{ worker_mem }}
+
+  guest_customization_cloud_init_user_data = base64encode("${data.template_file.user_data_worker.rendered}")
+
+  disk_list {
+    data_source_reference = {
+      kind = "image"
+      uuid = data.nutanix_image.ocp_image.metadata.uuid
+    }
+    disk_size_mib = {{ worker_disk }} * 1024
+    device_properties {
+      device_type = "DISK"
+      disk_address = {
+        "adapter_type" = "SCSI"
+        "device_index" = "0"
+      }
+    }
+  }
+
+  nic_list {
+     subnet_uuid = data.nutanix_subnet.my_subnet.metadata.uuid
+   }
+
+}
+
+output "ip_address_ocp_worker" {
+  value = nutanix_virtual_machine.ocp-worker[*].nic_list_status.0.ip_endpoint_list[0]["ip"]
+}
+

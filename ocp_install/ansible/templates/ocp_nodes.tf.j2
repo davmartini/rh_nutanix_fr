@@ -1,0 +1,106 @@
+###OCP temporay bootstrap
+resource "nutanix_virtual_machine" "ocp-bootstrap" {
+  count = {{ boostrap_count }}
+  name = "{{ ocp_cluster_name }}-ocp-bootstrap"
+  cluster_uuid = data.nutanix_cluster.my_cluster.metadata.uuid
+  num_vcpus_per_socket = 4
+  num_sockets          = 1
+  memory_size_mib      = 16384
+
+  guest_customization_cloud_init_user_data = base64encode("${data.template_file.user_data_bootstrap.rendered}")
+
+  disk_list {
+    data_source_reference = {
+      kind = "image"
+      uuid = data.nutanix_image.ocp_image.metadata.uuid
+    }
+    disk_size_mib = 100 * 1024
+    device_properties {
+      device_type = "DISK"
+      disk_address = {
+        "adapter_type" = "SCSI"
+        "device_index" = "0"
+      }
+    }
+  }
+
+  nic_list {
+     subnet_uuid = data.nutanix_subnet.my_subnet.metadata.uuid
+   }
+
+}
+
+###OCP masters
+resource "nutanix_virtual_machine" "ocp-master" {
+  count = {{ master_count }}
+  name = "{{ ocp_cluster_name }}-ocp-master-${count.index}"
+  cluster_uuid = data.nutanix_cluster.my_cluster.metadata.uuid
+  num_vcpus_per_socket = 4
+  num_sockets          = 1
+  memory_size_mib      = 16384
+
+  guest_customization_cloud_init_user_data = base64encode("${data.template_file.user_data_master.rendered}")
+
+  disk_list {
+    data_source_reference = {
+      kind = "image"
+      uuid = data.nutanix_image.ocp_image.metadata.uuid
+    }
+    disk_size_mib = {{ master_disk }} * 1024
+    device_properties {
+      device_type = "DISK"
+      disk_address = {
+        "adapter_type" = "SCSI"
+        "device_index" = "0"
+      }
+    }
+  }
+
+  nic_list {
+     subnet_uuid = data.nutanix_subnet.my_subnet.metadata.uuid
+   }
+
+}
+
+###OCP workers
+resource "nutanix_virtual_machine" "ocp-worker" {
+  count = {{ worker_count }}
+  name = "{{ ocp_cluster_name }}-ocp-worker-${count.index}"
+  cluster_uuid = data.nutanix_cluster.my_cluster.metadata.uuid
+  num_vcpus_per_socket = {{ worker_cpu }}
+  num_sockets          = {{ worker_socket }}
+  memory_size_mib      = {{ worker_mem }}
+
+  guest_customization_cloud_init_user_data = base64encode("${data.template_file.user_data_worker.rendered}")
+
+  disk_list {
+    data_source_reference = {
+      kind = "image"
+      uuid = data.nutanix_image.ocp_image.metadata.uuid
+    }
+    disk_size_mib = {{ worker_disk }} * 1024
+    device_properties {
+      device_type = "DISK"
+      disk_address = {
+        "adapter_type" = "SCSI"
+        "device_index" = "0"
+      }
+    }
+  }
+
+  nic_list {
+     subnet_uuid = data.nutanix_subnet.my_subnet.metadata.uuid
+   }
+
+}
+
+output "ip_address_ocp_bootstrap" {
+  value = nutanix_virtual_machine.ocp-bootstrap[*].nic_list_status.0.ip_endpoint_list[0]["ip"]
+}
+output "ip_address_ocp_master" {
+  value = nutanix_virtual_machine.ocp-master[*].nic_list_status.0.ip_endpoint_list[0]["ip"]
+}
+output "ip_address_ocp_worker" {
+  value = nutanix_virtual_machine.ocp-worker[*].nic_list_status.0.ip_endpoint_list[0]["ip"]
+}
+

@@ -1,0 +1,30 @@
+#######################################################################################################################
+#
+#       Variables file with all your parameters for your deployment in your environment
+#       You have an example in ocp_install directory with the file vars.yaml.example
+#
+#######################################################################################################################            
+
+##### Nutanix clusters vars 
+nutanix_username: 						#nutanix adm user
+nutanix_password:        					#nutanix adm password
+nutanix_endpoint:       					#nutanix Prism Central/Element IP
+nutanix_port:   						#nutanix Prism port
+subnet_name:    						#AOS subnet name used to deploy your cluster
+cluster_name:           					#AOS Cluster name
+
+##### Global vars
+infravm_ip:                                                     #Infravm IP you chosen
+
+##### OCP clusters vars
+ocp_admin_token: ''                                             #Your admin token generated from your OCP cluster console
+ocp_api_url: ''                                 	        #Your OCP API URL
+ocp_cluster_name:       					#Your existing OCP Cluster name without special characters
+ocp_image_name:                                         	#RHCOS image name imported on your AOS Cluster
+## Worker conf
+scale_date: 
+worker_count:                                                   #Number of OCP new worker nodes
+worker_cpu:                                                     #OCP worker CPU number
+worker_socket:                                                  #OCP worker Socket number
+worker_mem:                                                     #OCP worker MEM number
+worker_disk:                                                    #OCP worker disk capacity

@@ -1,0 +1,17 @@
+terraform {
+  required_providers {
+    nutanix = {
+      source = "nutanix/nutanix"
+      version = "1.2.0"
+    }
+  }
+}
+
+provider "nutanix" {
+  username     = "{{ nutanix_username }}"
+  password     = "{{ nutanix_password }}"
+  endpoint     = "{{ nutanix_endpoint }}"
+  port         = "{{ nutanix_port }}"
+  insecure     = true
+  wait_timeout = 10
+}

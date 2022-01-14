@@ -1,0 +1,32 @@
+### find image for infravm
+data "nutanix_image" "infravm_image" {
+   image_name = "{{ infravm_image_name }}"
+}
+### find image for OCP nodes
+data "nutanix_image" "ocp_image" {
+   image_name = "{{ ocp_image_name }}"
+}
+### find subnet
+data "nutanix_subnet" "my_subnet" {
+  subnet_name = "{{ subnet_name }}"
+}
+###find cluster
+data "nutanix_cluster" "my_cluster" {
+  name = "{{ cluster_name }}"
+}
+###Cloud-init file for infravm
+data "template_file" "user_data_infravm" {
+  template = file("files/cloud-init.yaml")
+}
+###Cloud-init file for OCP temporary bootstrap
+data "template_file" "user_data_bootstrap" {
+  template = file("files/bootstrap_cloud-init.yaml")
+}
+###Cloud-init file for OCP master
+data "template_file" "user_data_master" {
+  template = file("files/master_cloud-init.yaml")
+}
+###Cloud-init file for OCP worker
+data "template_file" "user_data_worker" {
+  template = file("files/worker_cloud-init.yaml")
+}

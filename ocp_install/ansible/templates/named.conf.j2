@@ -1,0 +1,15 @@
+//forward zone
+zone "{{ domain_name }}" IN {
+     type master;
+     file "/var/named/{{ domain_name }}.db";
+     allow-update { none; };
+     allow-query { any; };
+};
+
+//backward zone
+zone "72.42.10.in-addr.arpa" IN {
+     type master;
+     file "/var/named/{{ domain_name }}.rev";
+     allow-update { none; };
+     allow-query { any; };
+};

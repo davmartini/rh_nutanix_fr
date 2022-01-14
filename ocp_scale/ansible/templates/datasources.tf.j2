@@ -1,0 +1,16 @@
+### find image for OCP nodes
+data "nutanix_image" "ocp_image" {
+   image_name = "{{ ocp_image_name }}"
+}
+### find subnet
+data "nutanix_subnet" "my_subnet" {
+  subnet_name = "{{ subnet_name }}"
+}
+###find cluster
+data "nutanix_cluster" "my_cluster" {
+  name = "{{ cluster_name }}"
+}
+###Cloud-init file for OCP worker
+data "template_file" "user_data_worker" {
+  template = file("files/worker_cloud-init.yaml")
+}

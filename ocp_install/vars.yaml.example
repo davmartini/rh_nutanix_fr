@@ -1,0 +1,57 @@
+##### Nutanix clusters vars 
+nutanix_username: admin						#nutanix adm user
+nutanix_password: password 					#nutanix adm password
+nutanix_endpoint: 10.30.10.100					#nutanix Prism Central/Element IP
+nutanix_port: 9440						#nutanix Prism port
+subnet_name: ocp_subnet						#AOS subnet name used to deploy your cluster
+cluster_name: MY-CLUSTER					#AOS Cluster name
+
+##### Global vars
+domain_name: example.io						#Your DNS domain
+rh_ak_name: my_rh_key						#Your Red Hat Activation key to register infravm (https://access.redhat.com/articles/1378093)
+rh_org_id: 99999999						#Your Red Hat Organization ID in your Red Hat account.
+rh_pool_id: 11111111aaaaaaaa					#Your subscription pool ID coresponding to RHEL8 SKU
+
+##### infravm vars
+infravm_image_name: rhel-8.5-x86_64-kvm.qcow2			#RHEL8 image name imported on your Nutanix AOS Cluster
+infravm_ip: 10.30.10.210					#Infravm IP you chosen
+infravm_cpu: 2							#Infravm CPU number
+infravm_socket: 1						#Infravm Socket number
+infravm_mem: 2048						#Infravm MEM number
+infravm_disk: 40						#Infravm disk capacity
+infravm_remote_user: cloud-user					#SSH user used by Ansible to connect to the infravm server
+haproxy_stat_pwd: haproxy					#HAProxy stats page password
+
+##### OCP clusters vars
+ocp_cluster_name: cluster0					#OCP Cluster name without special characters
+ocp_image_name: rhcos-4.9.0-x86_64-openstack.x86_64.qcow2	#RHCOS image name imported on your AOS Cluster
+ocp_cluster_cidr: 10.128.0.0/14					#OCP Cluster cidr
+ocp_service_cidr: 172.30.0.0/16					#OCP Cluster service cidr
+ocp_hostprefix: 23						#OCP Cluster host prefix
+ocp_networktype: OpenShiftSDN					#OCP Cluster SDN Type
+ocp_pull_secret: '<your OpenShift pull secret>'			#OCP pull secret get on console.redhat.com with your Red hat account
+ocp_pub_sshkey: '<your ssh pub key>'				#You SSH public key to access to OCP nodes
+ocp_private_sshkey_path: '/root/.ssh/my_key'			#Your SSH private key to place in your .ssh user directory
+## Master conf
+master_count: 3							#Number of OCP master nodes
+master_disk: 100						#OCP master disk capacity
+## Worker conf
+worker_count: 3							#Number of OCP worker nodes
+worker_cpu: 2							#OCP worker CPU number
+worker_socket: 1						#OCP worker Socket number
+worker_mem: 8192						#OCP worker MEM number
+worker_disk: 100						#OCP worker disk capacity
+
+##### OCP GitOps
+enable_gitops: true						#Install GitOps on your cluster : true or false
+
+##### OCP Nutanix CSI
+enable_nutanix_csi: true					#Install Nutanix CSI operator on your cluster : true or false
+csi_fstype: ext4						#define fstype for your storage classe: ext4 or xfs
+nutanix_prim_element_vip: 10.30.10.101	                        #Prism Element endpoint VIP who provides the dataService
+nutanix_dataServiceEndPoint: 10.30.10.102			#Prism Element dataService endpoint IP
+nutanix_dataServiceEndPoint_port: 3260				#dataService endpoint port. Default = 3260
+nutanix_storageContainer: default_container			#Storage Container name on your Nutanix AOS Cluster
+nutanix_storageType: NutanixVolumes				#Storage type. Default = NutanixVolumes
+enable_iscsi_master: false					#Enable iscsi driver on master node to mount storage provided by Nutanix cluster. Default: false
+enable_iscsi_worker: true					#Enable iscsi driver on worker node to mount storage provided by Nutanix cluster. Default: true

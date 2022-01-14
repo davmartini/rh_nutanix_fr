@@ -1,0 +1,16 @@
+#cloud-config
+# Add groups to the system
+# Adds the ubuntu group with members 'root' and 'sys'
+# and the empty group hashicorp.
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: cloud-user
+    gecos: Cloud User
+    shell: /bin/bash
+    groups: [adm, systemd-journal]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    lock_passwd: true
+    ssh_authorized_keys:
+      - {{ ocp_pub_sshkey }}

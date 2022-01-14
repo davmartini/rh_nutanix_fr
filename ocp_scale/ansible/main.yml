@@ -1,0 +1,93 @@
+## David Martini / Red Hat
+## dmartini@redhat.com
+#
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+    - name: Add vars
+      include_vars: vars/vars.yaml
+      register: vars
+
+    - name: Create Terrafrom files directory
+      file:
+        path: ../terraform/files/
+        state: directory
+        mode: '0644'
+
+    - name: Generate main TF file
+      template:
+        src: templates/main.tf.j2
+        dest: ../terraform/main.tf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Generate datasources TF file
+      template:
+        src: templates/datasources.tf.j2
+        dest: ../terraform/datasources.tf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Generate new ocp_worker TF file
+      template:
+        src: templates/ocp_nodes.tf.j2
+        dest: ../terraform/ocp_nodes.tf
+        owner: root
+        group: root
+        mode: '0644'
+    
+    - name: Generate worker cloud-init TF file
+      template:
+        src: templates/worker_cloud-init.yaml.j2
+        dest: ../terraform/files/worker_cloud-init.yaml
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Deploy infra with terraform
+      shell: terraform -chdir=../terraform/ apply -auto-approve
+      register: tf
+
+    - name: Print terraform
+      debug: msg={{ tf }}
+
+    - name: OCP login
+      shell: oc login --insecure-skip-tls-verify=true --token={{ ocp_admin_token }} --server={{ ocp_api_url }}
+      register: ocp_login
+
+    - name: Waiting that workers are ready
+      shell: oc get csr |grep Pending |wc -l
+      register: csrworker
+      until: csrworker.stdout == "{{ worker_count }}"
+      retries: 120
+      delay: 10
+
+    - name: Accept CSR phase 1
+      shell: for i in `oc get csr --no-headers | grep -i pending |  awk '{ print $1 }'`; do oc adm certificate approve $i; done
+      register: csr1
+
+    - debug: msg={{ csr1.stdout }}
+
+    - name: Wait CSR phase 2
+      shell: oc get csr |grep Pending |wc -l
+      register: csrworker
+      until: csrworker.stdout == "{{ worker_count }}"
+      retries: 120
+      delay: 10
+
+    - name: Accept CSR phase 2
+      shell: for i in `oc get csr --no-headers | grep -i pending |  awk '{ print $1 }'`; do oc adm certificate approve $i; done
+      register: csr2
+
+    - debug: msg={{ csr2.stdout }}
+
+    - name: Cluster information
+      debug:
+        msg:
+          - "You have scaled your cluster {{ ocp_cluster_name }} with {{ worker_count }} new worker(s)"
