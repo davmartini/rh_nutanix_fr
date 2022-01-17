@@ -112,9 +112,9 @@
     - name: Print terraform
       debug: msg={{ tf }}
 
-    - name: Pause for 5 sec to wait infra deployment
+    - name: Pause for 30 sec to wait infra deployment
       pause:
-        seconds: 5
+        seconds: 30
 
     - name: Generate named file
       template:
