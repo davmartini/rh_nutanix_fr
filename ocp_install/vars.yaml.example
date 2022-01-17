@@ -17,8 +17,8 @@ infravm_image_name: rhel-8.5-x86_64-kvm.qcow2			#RHEL8 image name imported on yo
 infravm_ip: 10.30.10.210					#Infravm IP you chosen
 infravm_cpu: 2							#Infravm CPU number
 infravm_socket: 1						#Infravm Socket number
-infravm_mem: 2048						#Infravm MEM number
-infravm_disk: 40						#Infravm disk capacity
+infravm_mem: 2048						#Infravm MEM number (in MB)
+infravm_disk: 40						#Infravm disk capacity (in GB)
 infravm_remote_user: cloud-user					#SSH user used by Ansible to connect to the infravm server
 haproxy_stat_pwd: haproxy					#HAProxy stats page password
 
@@ -39,8 +39,8 @@ master_disk: 100						#OCP master disk capacity
 worker_count: 3							#Number of OCP worker nodes
 worker_cpu: 2							#OCP worker CPU number
 worker_socket: 1						#OCP worker Socket number
-worker_mem: 8192						#OCP worker MEM number
-worker_disk: 100						#OCP worker disk capacity
+worker_mem: 8192						#OCP worker MEM number (in MB)
+worker_disk: 100						#OCP worker disk capacity (in GB)
 
 ##### OCP GitOps
 enable_gitops: true						#Install GitOps on your cluster : true or false
