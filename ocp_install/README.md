@@ -87,7 +87,7 @@ dnf install git vim bind-utils jq podman ansible-navigator
 
 **5. Pull Ansible EE with all embedded tools on your RHEL8 VM Bastion**
 ```
-podman pull quay.io/david_martini/ocp_nuta:1.1
+podman pull quay.io/david_martini/ocp_nuta:4.x
 ```
 
 **6. Clone GIT repository on your RHEL8 VM Bastion**
@@ -126,7 +126,7 @@ nameserver 10.42.32.11
 **10. Deploy your cluster with Ansible**
 > :heavy_exclamation_mark: Before to deploy your cluster, be sure your have configured infravm IP as first DNS server in IPAM configuration of your AOS subnet.
 ```
-ansible-navigator run ansible/main.yml -i ansible/inventory --eei quay.io/david_martini/ocp_nuta:1.1 -m stdout --pae false --lf /tmp/ansible-navigator.log
+ansible-navigator run ansible/main.yml -i ansible/inventory --eei quay.io/david_martini/ocp_nuta:4.x -m stdout --pae false --lf /tmp/ansible-navigator.log
 ```
 
 **11. Cluster information**
