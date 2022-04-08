@@ -42,8 +42,13 @@ To give you an estimate, a cluster with 6 worker nodes takes around 10 - 30 min 
 	- AAP2 repo : ansible-automation-platform-2.1-for-rhel-8-x86_64-rpms
 - [ ] QCOW2 images imported on Nutanix AHV cluster :
 	- RHEL8 KVM image (ex: Red Hat Enterprise Linux 8.5 Update KVM Guest Image)
-	- RHCOS OpenStack image (ex: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.9/latest/rhcos-4.9.0-x86_64-openstack.x86_64.qcow2.gz or https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.10/latest/rhcos-4.10.3-x86_64-nutanix.x86_64.qcow2.gz)
-- [ ] Ansible Execution Environment : ocp_nuta (quay.io/david_martini/ocp_nuta:4.9 to deploy OCP4.9 or quay.io/david_martini/ocp_nuta:4.10 to deploy OCP4.10)
+	- RHCOS OpenStack image
+		- https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.9/latest/rhcos-4.9.0-x86_64-openstack.x86_64.qcow2.gz
+		- or 
+		- https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.10/latest/rhcos-4.10.3-x86_64-nutanix.x86_64.qcow2.gz)
+- [ ] Ansible Execution Environment : 
+	- quay.io/david_martini/ocp_nuta:4.9 to deploy OCP4.9
+	- quay.io/david_martini/ocp_nuta:4.10 to deploy OCP4.10
 - [ ] One VM bastion used to deploy automation with :
 	- RHEL8
 	- podman
